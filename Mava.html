@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Questionnaire</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            width: 300px;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .question {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .response {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px;
+        }
+        .response button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #007BFF;
+            color: white;
+            font-size: 16px;
+        }
+        .response button:hover {
+            background-color: #0056b3;
+        }
+        .liar {
+            color: red;
+            font-weight: bold;
+        }
+        .happy-animation {
+            display: none;
+            color: green;
+            font-size: 24px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Let's Play a Game!</h1>
+        <div id="question"></div>
+        <div class="response">
+            <button onclick="handleResponse('yes')">Yes</button>
+            <button onclick="handleResponse('no')">No</button>
+        </div>
+        <div class="liar" id="liar" style="display:none;">Liar!</div>
+        <div class="happy-animation" id="happyAnimation">🎉💍 Congratulations! 🎉</div>
+    </div>
+
+    <script>
+        let step = 0;
+
+        const questions = [
+            {
+                question: "Do you love Vansh Sharma?",
+                yesResponse: "Proceed to next question.",
+                noResponse: "Ask again until you say yes.",
+                nextQuestion: "Do Vansh loves you?"
+            },
+            {
+                question: "Do Vansh loves you?",
+                yesResponse: "Awwww Smarrttttt Champak",
+                noResponse: "Ayy Jhooti Tu Toh Meri Jaan Hain",
+                nextQuestion: "Will you marry me Jaan?"
+            },
+            {
+                question: "Will you marry me Jaan?",
+                yesResponse: "Show marriage animation and happy vibes",
+                noResponse: "Ask again until you say yes.",
+                nextQuestion: null
+            }
+        ];
+
+        function displayQuestion() {
+            const questionDiv = document.getElementById('question');
+            questionDiv.innerHTML = `<div class="question">${questions[step].question}</div>`;
+            document.getElementById('liar').style.display = 'none';
+            document.getElementById('happyAnimation').style.display = 'none';
+        }
+
+        function handleResponse(response) {
+            const questionDiv = document.getElementById('question');
+            const liarDiv = document.getElementById('liar');
+            const happyAnimationDiv = document.getElementById('happyAnimation');
+
+            if (response === 'yes') {
+                if (step === 0) {
+                    liarDiv.style.display = 'none';
+                    step++;
+                    displayQuestion();
+                } else if (step === 1) {
+                    questionDiv.innerHTML = `<div class="response">${questions[step].yesResponse}</div>`;
+                    step++;
+                    setTimeout(() => {
+                        displayQuestion();
+                    }, 2000);
+                } else if (step === 2) {
+                    happyAnimationDiv.style.display = 'block';
+                }
+            } else {
+                if (step === 0) {
+                    liarDiv.style.display = 'block';
+                } else if (step === 1) {
+                    questionDiv.innerHTML = `<div class="response">${questions[step].noResponse}</div>`;
+                    setTimeout(() => {
+                        displayQuestion();
+                    }, 2000);
+                }
+            }
+        }
+
+        window.onload = function() {
+            displayQuestion();
+        }
+    </script>
+</body>
+</html>
